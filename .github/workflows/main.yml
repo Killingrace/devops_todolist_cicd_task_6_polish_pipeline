@@ -39,7 +39,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
     outputs:
-      deploy-on: ${{matrix.osVersion}}-${{matrix.pythonVersion}}
+      deploy-on: '${{matrix.osVersion}}-${{matrix.pythonVersion}}'
 
     runs-on: ${{ matrix.osVersion }}
     defaults:
@@ -54,7 +54,7 @@ jobs:
         with:
           python-version: ${{ matrix.pythonVersion }}
 
-      - name: Install dependencieswindows
+      - name: Install dependencies windows
         run: |
           python -m pip install --upgrade pip
           pip install coverage flake8
