@@ -43,8 +43,6 @@ jobs:
         osVersion:
           - ubuntu-latest
           - windows-latest
-    outputs:
-      deploy-on: '${{matrix.osVersion}}-${{matrix.pythonVersion}}'
 
     runs-on: ${{ matrix.osVersion }}
     defaults:
