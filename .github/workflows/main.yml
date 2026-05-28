@@ -16,7 +16,7 @@ on:
           - 'windows-latest-3.9'
           - 'ubuntu-latest-3.8'
           - 'ubuntu-latest-3.9'
-        default: ubuntu-3.8
+        default: 'ubuntu-latest-3.8'
 
 concurrency:
   group: ${{github.workflow}}-${{github.event.pull_request.number}}
@@ -126,8 +126,8 @@ jobs:
 
   helm-ci:
     runs-on: ubuntu-latest
+    if: (github.ref_name == 'main') && (needs.python-ci.outputs.deploy-on == inputs.deploy-on)
     needs: python-ci
-    if: github.ref_name == 'main'
     name: Helm CI
     steps:
 
