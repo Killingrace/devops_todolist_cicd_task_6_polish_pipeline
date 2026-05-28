@@ -9,14 +9,19 @@ on:
     branches: ["main"]
   workflow_dispatch:
     inputs:
-      deploy-on:
+      deploy-os:
         type: choice
         options:
-          - 'windows-latest-3.8'
-          - 'windows-latest-3.9'
-          - 'ubuntu-latest-3.8'
-          - 'ubuntu-latest-3.9'
-        default: 'ubuntu-latest-3.8'
+          - windows-latest
+          - ubuntu-latest
+        default: 'ubuntu-latest'
+      deploy-python-vesion:
+        type: choice
+        options:
+          - '3.8'
+          - '3.9'
+        default: '3.8'
+
 
 concurrency:
   group: ${{github.workflow}}-${{github.event.pull_request.number}}
@@ -79,20 +84,21 @@ jobs:
           flake8 . --exit-zero --max-complexity=6
 
       - name: Upload python artifacts
+        if: ${{ github.ref_name == 'main' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-vesion == format('{0}', matrix.pythonVersion) }}
         uses: actions/upload-artifact@v4
         with:
           name: python-artifacts
           path: .
 
       - name: Upload helm artifacts
-        if: github.ref_name == 'main'
+        if: ${{ github.ref_name == 'main' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-vesion == format('{0}', matrix.pythonVersion) }}
         uses: actions/upload-artifact@v4
         with:
           name: helm-artifacts
           path: ${{ github.workspace }}/helm-charts
 
       - name: Upload kind cluster artifact
-        if: github.ref_name == 'main'
+        if: ${{ github.ref_name == 'main' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-vesion == format('{0}', matrix.pythonVersion) }}
         uses: actions/upload-artifact@v4
         with:
           name: kind-cluster
@@ -102,7 +108,7 @@ jobs:
     name: Build and Push Image
     runs-on: ubuntu-latest
     needs: python-ci
-    if: (github.ref_name == 'main') && (needs.python-ci.outputs.deploy-on == inputs.deploy-on)
+    if: github.ref_name == 'main'
     steps:
 
     - uses: actions/download-artifact@v4
@@ -126,7 +132,7 @@ jobs:
 
   helm-ci:
     runs-on: ubuntu-latest
-    if: (github.ref_name == 'main') && (needs.python-ci.outputs.deploy-on == inputs.deploy-on)
+    if: github.ref_name == 'main'
     needs: python-ci
     name: Helm CI
     steps:
