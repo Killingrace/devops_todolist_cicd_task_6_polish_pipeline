@@ -32,7 +32,7 @@ jobs:
       matrix:
         pythonVersion:
           - 3.8
-          - 3.8
+          - 3.9
         osVersion:
           - ubuntu-latest
           - windows-latest
