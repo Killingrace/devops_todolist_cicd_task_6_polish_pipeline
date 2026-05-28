@@ -15,7 +15,7 @@ on:
           - windows-latest
           - ubuntu-latest
         default: 'ubuntu-latest'
-      deploy-python-vesion:
+      deploy-python-version:
         type: choice
         options:
           - '3.8'
@@ -86,7 +86,7 @@ jobs:
       - name: Upload python artifacts
         if: |
           github.ref_name == 'main' && (
-            (github.event_name == 'workflow_dispatch' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-vesion == format('{0}', matrix.pythonVersion)) ||
+            (github.event_name == 'workflow_dispatch' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-version == format('{0}', matrix.pythonVersion)) ||
             (github.event_name != 'workflow_dispatch' && matrix.osVersion == 'ubuntu-latest' && matrix.pythonVersion == 3.9)
           )
         uses: actions/upload-artifact@v4
@@ -97,7 +97,7 @@ jobs:
       - name: Upload helm artifacts
         if: |
           github.ref_name == 'main' && (
-            (github.event_name == 'workflow_dispatch' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-vesion == format('{0}', matrix.pythonVersion)) ||
+            (github.event_name == 'workflow_dispatch' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-version == format('{0}', matrix.pythonVersion)) ||
             (github.event_name != 'workflow_dispatch' && matrix.osVersion == 'ubuntu-latest' && matrix.pythonVersion == 3.9)
           )
         uses: actions/upload-artifact@v4
@@ -108,7 +108,7 @@ jobs:
       - name: Upload kind cluster artifact
         if: |
           github.ref_name == 'main' && (
-            (github.event_name == 'workflow_dispatch' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-vesion == format('{0}', matrix.pythonVersion)) ||
+            (github.event_name == 'workflow_dispatch' && inputs.deploy-os == matrix.osVersion && inputs.deploy-python-version == format('{0}', matrix.pythonVersion)) ||
             (github.event_name != 'workflow_dispatch' && matrix.osVersion == 'ubuntu-latest' && matrix.pythonVersion == 3.9)
           )
         uses: actions/upload-artifact@v4
